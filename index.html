@@ -24,16 +24,16 @@
     <div id="examen" class="container">
         <div id="timer">Tiempo restante: <span id="time">10:00</span></div>
         
-        <h2>Evaluación de Prueba</h2>
-        <p>Al entrar a esta página, tu oportunidad ha comenzado. Si cierras la pestaña, perderás el examen.</p>
+        <h2>EvaluaciÃ³n de Prueba</h2>
+        <p>Al entrar a esta pÃ¡gina, tu oportunidad ha comenzado. Si cierras la pestaÃ±a, perderÃ¡s el examen.</p>
         
         <form id="quizForm">
-            <p>1. ¿Cuál es la capital de Francia?</p>
+            <p>1. Â¿CuÃ¡l es la capital de Francia?</p>
             <input type="radio" name="p1" value="a"> Madrid<br>
-            <input type="radio" name="p1" value="b"> París<br>
+            <input type="radio" name="p1" value="b"> ParÃ­s<br>
             <input type="radio" name="p1" value="c"> Londres<br><br>
 
-            <p>2. ¿Cuánto es 2 + 2?</p>
+            <p>2. Â¿CuÃ¡nto es 2 + 2?</p>
             <input type="radio" name="p2" value="a"> 3<br>
             <input type="radio" name="p2" value="b"> 4<br>
             <input type="radio" name="p2" value="c"> 5<br><br>
@@ -44,12 +44,12 @@
 
     <script>
         // 1. CONTROL DE INTENTOS (CANDADO ANTI-CIERRE)
-        // Revisamos si el alumno ya entró antes
+        // Revisamos si el alumno ya entrÃ³ antes
         if (localStorage.getItem("examenAbierto") === "true") {
             document.getElementById("examen").classList.add("hidden");
             document.getElementById("bloqueo").classList.remove("hidden");
         } else {
-            // Si es su primera vez, dejamos la marca de que YA ENTRÓ
+            // Si es su primera vez, dejamos la marca de que YA ENTRÃ“
             localStorage.setItem("examenAbierto", "true");
         }
 
@@ -61,13 +61,13 @@
             let minutos = Math.floor(totalSegundos / 600);
             let segundos = totalSegundos % 60;
 
-            // Formato de dos dígitos (05:09 en lugar de 5:9)
+            // Formato de dos dÃ­gitos (05:09 en lugar de 5:9)
             segundos = segundos < 10 ? '0' + segundos : segundos;
             timerElement.textContent = `${minutos}:${segundos}`;
 
             if (totalSegundos <= 0) {
                 clearInterval(cuentaRegresiva);
-                alert("¡Se acabó el tiempo! Tu examen se enviará automáticamente.");
+                alert("Â¡Se acabÃ³ el tiempo! Tu examen se enviarÃ¡ automÃ¡ticamente.");
                 enviarExamen();
             }
             totalSegundos--;
@@ -77,11 +77,11 @@
         function enviarExamen() {
             clearInterval(cuentaRegresiva);
             
-            // Aquí puedes procesar las respuestas o enviarlas a una base de datos
-            alert("Examen enviado con éxito.");
+            // AquÃ­ puedes procesar las respuestas o enviarlas a una base de datos
+            alert("Examen enviado con Ã©xito.");
             
-            // Opcional: Puedes redirigirlos a otra página al terminar
-            document.getElementById("examen").innerHTML = "<h3>Gracias por completar la evaluación.</h3>";
+            // Opcional: Puedes redirigirlos a otra pÃ¡gina al terminar
+            document.getElementById("examen").innerHTML = "<h3>Gracias por completar la evaluaciÃ³n.</h3>";
         }
     </script>
 </body>
