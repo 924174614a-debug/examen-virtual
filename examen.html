@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Seguro con Temporizador</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        #timer { font-size: 20px; font-weight: bold; color: red; position: fixed; top: 10px; right: 10px; background: white; padding: 10px; border: 1px solid red; border-radius: 5px; }
+        .hidden { display: none; }
+        .error-msg { color: red; font-weight: bold; text-align: center; margin-top: 50px; font-size: 24px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <!-- Mensaje de bloqueo si intenta volver a entrar -->
+    <div id="bloqueo" class="error-msg hidden">
+        ?? ACCESO DENEGADO<br>Ya abriste este examen anteriormente. No se permiten segundos intentos.
+    </div>
+
+    <!-- Contenido del Examen -->
+    <div id="examen" class="container">
+        <div id="timer">Tiempo restante: <span id="time">10:00</span></div>
+        
+        <h2>Evaluación de Prueba</h2>
+        <p>Al entrar a esta página, tu oportunidad ha comenzado. Si cierras la pestaña, perderás el examen.</p>
+        
+        <form id="quizForm">
+            <p>1. ¿Cuál es la capital de Francia?</p>
+            <input type="radio" name="p1" value="a"> Madrid<br>
+            <input type="radio" name="p1" value="b"> París<br>
+            <input type="radio" name="p1" value="c"> Londres<br><br>
+
+            <p>2. ¿Cuánto es 2 + 2?</p>
+            <input type="radio" name="p2" value="a"> 3<br>
+            <input type="radio" name="p2" value="b"> 4<br>
+            <input type="radio" name="p2" value="c"> 5<br><br>
+
+            <button type="button" onclick="enviarExamen()">Enviar Respuestas</button>
+        </form>
+    </div>
+
+    <script>
+        // 1. CONTROL DE INTENTOS (CANDADO ANTI-CIERRE)
+        // Revisamos si el alumno ya entró antes
+        if (localStorage.getItem("examenAbierto") === "true") {
+            document.getElementById("examen").classList.add("hidden");
+            document.getElementById("bloqueo").classList.remove("hidden");
+        } else {
+            // Si es su primera vez, dejamos la marca de que YA ENTRÓ
+            localStorage.setItem("examenAbierto", "true");
+        }
+
+        // 2. TEMPORIZADOR (10 minutos = 600 segundos)
+        let totalSegundos = 600; 
+        const timerElement = document.getElementById("time");
+
+        const cuentaRegresiva = setInterval(() => {
+            let minutos = Math.floor(totalSegundos / 600);
+            let segundos = totalSegundos % 60;
+
+            // Formato de dos dígitos (05:09 en lugar de 5:9)
+            segundos = segundos < 10 ? '0' + segundos : segundos;
+            timerElement.textContent = `${minutos}:${segundos}`;
+
+            if (totalSegundos <= 0) {
+                clearInterval(cuentaRegresiva);
+                alert("¡Se acabó el tiempo! Tu examen se enviará automáticamente.");
+                enviarExamen();
+            }
+            totalSegundos--;
+        }, 1000);
+
+        // 3. ENVIAR RESULTADOS
+        function enviarExamen() {
+            clearInterval(cuentaRegresiva);
+            
+            // Aquí puedes procesar las respuestas o enviarlas a una base de datos
+            alert("Examen enviado con éxito.");
+            
+            // Opcional: Puedes redirigirlos a otra página al terminar
+            document.getElementById("examen").innerHTML = "<h3>Gracias por completar la evaluación.</h3>";
+        }
+    </script>
+</body>
+</html>
